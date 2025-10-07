@@ -1,19 +1,28 @@
 import { Container, Row, Col } from 'react-bootstrap';
+import Image from 'next/image';
 
 export default function BookDetails({ book }) {
   return (
     <Container>
       <Row>
         <Col lg="4">
-          <img
-            onError={(event) => {
-              event.target.onerror = null; // Remove the event handler to prevent infinite loop
-              event.target.src = "https://placehold.co/400x600?text=Cover+Not+Available";
-            }}
-            className="img-fluid w-100"
-            src={`https://covers.openlibrary.org/b/id/${book?.covers?.[0]}-L.jpg`}
-            alt="Cover Image"
-          />
+          <div className="img-container">
+            <Image
+              src={
+                book?.covers?.[0]
+                  ? `https://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`
+                  : "https://placehold.co/400x600?text=Cover+Not+Available"
+              }
+              alt="Cover Image"
+              width={400}
+              height={600}
+              layout="responsive"
+              onError={(event) => {
+                event.target.onerror = null; // Remove the event handler to prevent infinite loop
+                event.target.src = "https://placehold.co/400x600?text=Cover+Not+Available";
+              }}
+            />
+          </div>
           <br />
           <br />
         </Col>
