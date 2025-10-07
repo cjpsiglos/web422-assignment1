@@ -8,17 +8,12 @@ export default function About({ book }) {
 
   return (
     <>
-      <PageHeader text="About the Developer - Your Name" />
+      <PageHeader text="About the Developer - Carlos Siglos" />
       <Card className="bg-light">
         <Card.Body>
           <p>
-            Hello! My name is [Your Name], and I am a web developer passionate about creating interactive and
-            user-friendly web applications. I enjoy working with modern frameworks like React and Next.js to build
-            scalable and efficient solutions.
-          </p>
-          <p>
-            The book I chose to showcase is {book.title} by {book.authors?.[0]?.name || "Unknown Author"}. This book
-            is a fascinating read and has inspired me in many ways.
+            Hello! My name is Carlos. I am a 3rd year CPA student at Seneca College. I have a passion for software development and I have a strong interest in the 
+            theory of computation and algorithms. This is my assignment 1 submission for WEB4222. I hope this assignment is sufficient and meets the requirements.
           </p>
         </Card.Body>
       </Card>
