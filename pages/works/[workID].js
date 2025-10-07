@@ -8,25 +8,23 @@ export default function Work() {
   const router = useRouter();
   const { workId } = router.query;
 
-  // Fetch book data using SWR
-  const { data, error } = useSWR(
-    workId ? `https://openlibrary.org/works/${workId}.json` : null
-  );
+  const { data, error } = useSWR(workId ? `https://openlibrary.org/works/${workId}.json` : null);
 
-  // If data is still loading, return null
-  if (!data && !error) return null;
+  if (!data && !error) return <p>Loading book data...</p>;
+  if (error || !data) return <Error statusCode={404} />;
 
-  // If there is an error or no data, show a 404 error
-  if (error || !data) {
-    console.error("Error fetching book data:", error);
-    return <Error statusCode={404} />;
-  }
+  console.log("Rendering book:", data.title, data.description?.value);
 
-  // Render the book details
   return (
     <>
-      <PageHeader text={data?.title || "Unknown Title"} />
-      <BookDetails book={data} />
+      <PageHeader text={data.title || "Unknown Title"} />
+      <BookDetails
+        book={{
+          ...data,
+          description: data.description?.value || "No description available",
+          authorNames: data.authors?.map(a => a.author?.key) || [],
+        }}
+      />
     </>
   );
 }
