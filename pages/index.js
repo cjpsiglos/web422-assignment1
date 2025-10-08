@@ -1,4 +1,15 @@
-// pages/index.js
+/*********************************************************************************
+* WEB422 – Assignment 1
+*
+* I declare that this assignment is my own work in accordance with Seneca's
+* Academic Integrity Policy:
+*
+* https://www.senecapolytechnic.ca/about/policies/academic-integrity-policy.html
+*
+* Name: Carlos Siglos Student ID:168536233 Date: 2025-10-07
+*
+********************************************************************************/
+
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
@@ -13,7 +24,7 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const author = 'Terry Pratchett';
 
-  // Fetch search results from Open Library API
+  // Fetch search results
   const { data, error } = useSWR(
     `https://openlibrary.org/search.json?author=${encodeURIComponent(author)}&page=${page}&limit=10`,
     fetcher
@@ -22,7 +33,6 @@ export default function Home() {
   if (error) return <p>Error loading data...</p>;
   if (!data) return <p>Loading...</p>;
 
-  // Defensive check for docs
   const books = data.docs || [];
 
   const previous = () => page > 1 && setPage(page - 1);
@@ -31,7 +41,6 @@ export default function Home() {
   return (
     <>
       <PageHeader text={<span style={{ fontWeight: 'bold' }}>Novels By {author}</span>} />
-
 
       <Table striped hover>
         <thead>

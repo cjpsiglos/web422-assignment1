@@ -8,7 +8,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Work() {
   const router = useRouter();
-  const { workID } = router.query; // must match filename [workID].js
+  const { workID } = router.query;
 
   // Wait until router is ready
   const { data, error } = useSWR(
@@ -33,7 +33,6 @@ export default function Work() {
   );
 }
 
-// Optional: If you want to pre-render some pages at build time
 export async function getStaticPaths() {
   // Pre-render only these specific works at build time (example)
   const paths = [
@@ -46,10 +45,10 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const { workID } = params;
 
-  // Defensive check
+  //  check
   if (!workID || typeof workID !== 'string') {
     return { notFound: true };
   }
 
-  return { props: {} }; // actual data is fetched on client with SWR
+  return { props: {} };
 }

@@ -21,7 +21,7 @@ export default function About({ book }) {
 
 // Fetch data for the book using getStaticProps
 export async function getStaticProps() {
-  const workId = "OL453657W"; // Replace with the Work ID of your chosen book
+  const workId = "OL453657W";
   const res = await fetch(`https://openlibrary.org/works/${workId}.json`);
   const data = await res.json();
 
