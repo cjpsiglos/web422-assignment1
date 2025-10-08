@@ -30,7 +30,8 @@ export default function Home() {
 
   return (
     <>
-      <PageHeader text={`Novels by ${author}`} />
+      <PageHeader text={<span style={{ fontWeight: 'bold' }}>Novels By {author}</span>} />
+
 
       <Table striped hover>
         <thead>
@@ -54,6 +55,7 @@ export default function Home() {
             );
           })}
         </tbody>
+        <br/>
       </Table>
 
       <Pagination>

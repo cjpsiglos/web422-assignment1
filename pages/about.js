@@ -8,15 +8,11 @@ export default function About({ book }) {
 
   return (
     <>
-      <PageHeader text="About the Developer - Carlos Siglos" />
-      <Card className="bg-light">
-        <Card.Body>
+      <PageHeader text={<span style={{ fontWeight: 'bold' }}>About the Developer - Carlos Siglos</span>} />
           <p>
             Hello! My name is Carlos. I am a 3rd year CPA student at Seneca College. I have a passion for software development and I have a strong interest in the 
             theory of computation and algorithms. This is my assignment 1 submission for WEB4222. I hope this assignment is sufficient and meets the requirements.
           </p>
-        </Card.Body>
-      </Card>
       <br />
       <BookDetails book={book} />
     </>

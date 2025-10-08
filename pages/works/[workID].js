@@ -21,7 +21,8 @@ export default function Work() {
 
   return (
     <>
-      <PageHeader text={data.title || 'Unknown Title'} />
+      <PageHeader text={<span style={{ fontWeight: 'bold' }}>{data.title || 'Unknown Title'}</span>} />
+
       <BookDetails
         book={{
           ...data,
