@@ -1,6 +1,6 @@
 import Layout from '@/components/layout';
 import { SWRConfig } from 'swr';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import '@/styles/bootstrap.min.css';
 
 const fetcher = async (...args) => {
   const response = await fetch(...args);

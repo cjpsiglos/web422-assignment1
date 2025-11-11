@@ -1,77 +1,126 @@
-/*********************************************************************************
-* WEB422 – Assignment 1
+/********************************************************************************
+* WEB422 – Assignment 02
 *
 * I declare that this assignment is my own work in accordance with Seneca's
 * Academic Integrity Policy:
 *
 * https://www.senecapolytechnic.ca/about/policies/academic-integrity-policy.html
 *
-* Name: Carlos Siglos Student ID:168536233 Date: 2025-10-07
+* Name: Carlos Siglos Student ID: 168536233 Date: 11/11/2025
 *
 ********************************************************************************/
 
-import { useState } from 'react';
+import React from "react";
+import PageHeader from "../components/PageHeader";
+import { Form, Row, Col, Button } from "react-bootstrap";
+import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
-import { Table, Pagination } from 'react-bootstrap';
-import PageHeader from '@/components/PageHeader';
-
-// Fetcher for SWR
-const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Home() {
   const router = useRouter();
-  const [page, setPage] = useState(1);
-  const author = 'Terry Pratchett';
 
-  // Fetch search results
-  const { data, error } = useSWR(
-    `https://openlibrary.org/search.json?author=${encodeURIComponent(author)}&page=${page}&limit=10`,
-    fetcher
-  );
 
-  if (error) return <p>Error loading data...</p>;
-  if (!data) return <p>Loading...</p>;
+  const { register, handleSubmit, formState: { errors }, } = useForm({
+    defaultValues: {
+      author: "",
+      title: "",
+      subject: "",
+      language: "",
+      first_publish_year: "",
+    },
+  });
 
-  const books = data.docs || [];
-
-  const previous = () => page > 1 && setPage(page - 1);
-  const next = () => setPage(page + 1);
-
+  const onSubmit = (data) => {
+    router.push({
+      pathname: "/books",
+      query: Object.fromEntries(
+        Object.entries(data).filter(([_, value]) => value !== "")
+      ),
+    });
+  };
   return (
     <>
-      <PageHeader text={<span style={{ fontWeight: 'bold' }}>Novels By {author}</span>} />
+      <PageHeader 
+        text="Search for Books" 
+        subtext="Browse the extensive collection of books available on openlibrary.org." 
+      />
+      
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Row>
+          <Col xs={12}>
+            <Form.Group controlId="formAuthor" className="mb-3">
+              <Form.Label>Author</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter author"
+                {...register("author", { required: true })}
+                className={errors.author ? "is-invalid" : ""}
+              />
+              {errors.author?.type === "required" && (
+                <Form.Text className="text-danger">
+                  Author is required.
+                </Form.Text>
+              )}
+            </Form.Group>
+          </Col>
+        </Row>
 
-      <Table striped hover>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Published</th>
-          </tr>
-        </thead>
-        <tbody>
-          {books.map((book) => {
-            const workId = book.key.replace('/works/', '');
-            return (
-              <tr
-                key={book.key}
-                style={{ cursor: 'pointer' }}
-                onClick={() => router.push(`/works/${workId}`)}
-              >
-                <td>{book.title}</td>
-                <td>{book.first_publish_year || 'N/A'}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-        <br/>
-      </Table>
+        <Row>
+          <Col lg={6}>
+            <Form.Group controlId="formTitle" className="mb-3">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter title"
+                {...register("title")}
+              />
+            </Form.Group>
+          </Col>
+          <Col lg={6}>
+            <Form.Group controlId="formSubject" className="mb-3">
+              <Form.Label>Subject (contains)</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter subject keyword"
+                {...register("subject")}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
 
-      <Pagination>
-        <Pagination.Prev onClick={previous} disabled={page === 1} />
-        <Pagination.Item>{page}</Pagination.Item>
-        <Pagination.Next onClick={next} />
-      </Pagination>
+        <Row className="mb-4">
+          <Col lg={6}>
+            <Form.Group controlId="formLanguage" className="mb-3">
+              <Form.Label>Language Code</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter language code (e.g. eng)"
+                maxLength="3"
+                {...register("language")}
+              />
+            </Form.Group>
+          </Col>
+          <Col lg={6}>
+            <Form.Group controlId="formPublishYear" className="mb-3">
+              <Form.Label>First Published (Year)</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter published year"
+                {...register("first_publish_year")}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row className="mb-3">
+          <Col xs={12}>
+            <Button variant="primary" type="submit" className="w-100 py-3 fs-5" disabled={Object.keys(errors).length > 0}>
+              Search
+            </Button>
+          </Col>
+        </Row>
+      </Form>
     </>
   );
 }
